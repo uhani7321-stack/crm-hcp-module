@@ -172,8 +172,10 @@ const LogInteraction = () => {
             <div className="flex justify-between items-center border border-gray-200 rounded-md p-3">
               <div>
                 <div className="text-[13px] font-medium text-gray-800">Materials Shared</div>
-                <div className="text-[12px] text-gray-500 italic mt-0.5">
-                  {formData.materials_shared ? formData.materials_shared : 'No materials added.'}
+                <div className="text-[12px] text-gray-500 mt-0.5">
+                  {formData.materials_shared && formData.materials_shared.length > 0
+                    ? (Array.isArray(formData.materials_shared) ? formData.materials_shared.join(', ') : formData.materials_shared)
+                    : <span className="italic">No materials added.</span>}
                 </div>
               </div>
               <button className="flex items-center gap-1.5 border border-gray-300 px-3 py-1.5 rounded-md text-[13px] font-medium text-gray-700 hover:bg-gray-50 bg-white shadow-sm">
@@ -184,8 +186,10 @@ const LogInteraction = () => {
             <div className="flex justify-between items-center border border-gray-200 rounded-md p-3">
               <div>
                 <div className="text-[13px] font-medium text-gray-800">Samples Distributed</div>
-                <div className="text-[12px] text-gray-500 italic mt-0.5">
-                  {formData.samples_distributed ? formData.samples_distributed : 'No samples added.'}
+                <div className="text-[12px] text-gray-500 mt-0.5">
+                  {formData.samples_distributed && formData.samples_distributed.length > 0
+                    ? (Array.isArray(formData.samples_distributed) ? formData.samples_distributed.join(', ') : formData.samples_distributed)
+                    : <span className="italic">No samples added.</span>}
                 </div>
               </div>
               <button className="flex items-center gap-1.5 border border-gray-300 px-3 py-1.5 rounded-md text-[13px] font-medium text-gray-700 hover:bg-gray-50 bg-white shadow-sm">
