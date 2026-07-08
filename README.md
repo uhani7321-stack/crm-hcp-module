@@ -7,7 +7,7 @@ This project implements the "Log HCP Interaction" screen for a pharmaceutical CR
 * **Frontend**: React.js, Redux Toolkit, Tailwind CSS, Axios
 * **Backend**: Python, FastAPI, SQLAlchemy
 * **AI Agent Framework**: LangGraph, Langchain
-* **LLM**: Groq (`gemma2-9b-it`)
+* **LLM**: Groq (`llama-3.3-70b-versatile` for enhanced tool calling context)
 * **Database**: PostgreSQL (with SQLite fallback for local development)
 * **Font**: Google Inter
 
@@ -23,9 +23,9 @@ The LangGraph agent utilizes the following specific tools to assist in sales-rel
    * **Purpose**: Captures and saves the interaction data into the database.
    * **Detail**: After the LLM extracts the entities (HCP Name, Interaction Type, Topics Discussed, Sentiment, etc.) from the natural language input, it maps them into a structured JSON format. This tool takes that structured data and inserts a new record into the `Interaction` database table, automatically linking it to the relevant HCP.
 
-2. **Edit Interaction**
+2. **Edit Interaction (edit_latest_interaction)**
    * **Purpose**: Allows modification of previously logged data.
-   * **Detail**: If a sales representative needs to append information (e.g., "I forgot to add that I gave him 5 samples"), the agent uses this tool to locate the specific interaction by ID and update the necessary fields in the database without overwriting the existing valid data.
+   * **Detail**: Because the AI chat is stateless, if a sales representative needs to correct a mistake (e.g., "sorry change dr smith to dr reena"), the agent uses this tool to target the most recently logged interaction. It applies the partial updates (like just changing the HCP Name) to the database row, without overwriting other existing data, and returns the fully updated form state to the UI.
 
 3. **Search HCP**
    * **Purpose**: Retrieves existing Healthcare Professional records.
