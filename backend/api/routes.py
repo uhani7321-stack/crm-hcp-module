@@ -23,7 +23,11 @@ def get_interactions(skip: int = 0, limit: int = 100, db: Session = Depends(get_
 
 @router.post("/ai/extract")
 def extract_from_chat(request: ChatRequest):
-    result = agent.invoke({"messages": [HumanMessage(content=request.message)]})
+    try:
+        result = agent.invoke({"messages": [HumanMessage(content=request.message)]})
+    except Exception as e:
+        import traceback
+        return {"summary": f"LLM Error: {str(e)} - {traceback.format_exc()}", "tools_called": []}
     
     # Extract which tools were called during this turn
     tools_called = []
