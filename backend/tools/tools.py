@@ -17,11 +17,23 @@ def search_hcp(query: str) -> str:
         db.close()
 
 @tool
-def log_interaction(interaction_data_json: str) -> str:
-    """Save interaction details into database. Provide JSON string with interaction fields."""
+def log_interaction(
+    hcp_name: str = None, interaction_type: str = None, date: str = None, time: str = None,
+    attendees: list = None, topics_discussed: list = None, materials_shared: list = None,
+    samples_distributed: str = None, sentiment: str = None, outcomes: str = None, follow_up_actions: str = None,
+    summary: str = None
+) -> str:
+    """Save interaction details into database. Pass the interaction fields as arguments."""
     db = SessionLocal()
     try:
-        data = json.loads(interaction_data_json)
+        data = {
+            "hcp_name": hcp_name, "interaction_type": interaction_type, "date": date, "time": time,
+            "attendees": attendees, "topics_discussed": topics_discussed, "materials_shared": materials_shared,
+            "samples_distributed": samples_distributed, "sentiment": sentiment, "outcomes": outcomes, "follow_up_actions": follow_up_actions,
+            "summary": summary
+        }
+        # filter out None
+        data = {k: v for k, v in data.items() if v is not None}
         interaction = Interaction(**data)
         db.add(interaction)
         db.commit()
@@ -33,18 +45,30 @@ def log_interaction(interaction_data_json: str) -> str:
         db.close()
 
 @tool
-def edit_interaction(interaction_id: int, updates_json: str) -> str:
-    """Allow updating previously logged interaction."""
+def edit_latest_interaction(
+    hcp_name: str = None, interaction_type: str = None, date: str = None, time: str = None,
+    attendees: list = None, topics_discussed: list = None, materials_shared: list = None,
+    samples_distributed: str = None, sentiment: str = None, outcomes: str = None, follow_up_actions: str = None,
+    summary: str = None
+) -> str:
+    """Allow updating the most recently logged interaction. Pass only the fields you want to update."""
     db = SessionLocal()
     try:
-        interaction = db.query(Interaction).filter(Interaction.id == interaction_id).first()
+        interaction = db.query(Interaction).order_by(Interaction.id.desc()).first()
         if not interaction:
             return "Interaction not found."
-        updates = json.loads(updates_json)
+        
+        updates = {
+            "hcp_name": hcp_name, "interaction_type": interaction_type, "date": date, "time": time,
+            "attendees": attendees, "topics_discussed": topics_discussed, "materials_shared": materials_shared,
+            "samples_distributed": samples_distributed, "sentiment": sentiment, "outcomes": outcomes, "follow_up_actions": follow_up_actions,
+            "summary": summary
+        }
         for key, value in updates.items():
-            setattr(interaction, key, value)
+            if value is not None:
+                setattr(interaction, key, value)
         db.commit()
-        return f"Interaction {interaction_id} updated."
+        return f"Latest interaction updated."
     except Exception as e:
         return f"Error updating interaction: {e}"
     finally:
