@@ -43,9 +43,19 @@ const LogInteraction = () => {
         }));
       } else if (data) {
         dispatch(populateFromAI(data));
+        
+        // Format the message with tool usage indicators (without markdown since we render plain text)
+        let responseContent = data.summary || "Extracted details from your message and populated the form.";
+        if (data.tools_called && data.tools_called.length > 0) {
+          // Remove duplicates
+          const uniqueTools = [...new Set(data.tools_called)];
+          const toolsString = uniqueTools.join(', ');
+          responseContent += `\n\n🛠️ Tools executed: [ ${toolsString} ]`;
+        }
+        
         dispatch(addMessage({ 
           role: 'assistant', 
-          content: 'Extracted details from your message and populated the form.' 
+          content: responseContent 
         }));
       }
     } catch (error) {
