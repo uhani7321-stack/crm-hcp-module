@@ -309,8 +309,8 @@ const LogInteraction = () => {
                 key={idx} 
                 className={`max-w-[90%] rounded-lg p-3 text-[13px] shadow-sm ${
                   msg.role === 'user' 
-                    ? 'bg-[#f0f0f0] border-l-[3px] border-blue-600 text-gray-800 self-start rounded-tl-none' 
-                    : 'bg-[#e8f5e9] text-[#2e7d32] border border-[#c8e6c9] self-end rounded-tr-none'
+                    ? 'bg-blue-600 text-white self-end rounded-tr-none' 
+                    : 'bg-[#e8f5e9] text-[#2e7d32] border border-[#c8e6c9] self-start rounded-tl-none'
                 }`}
               >
                 {msg.role === 'assistant' ? (
