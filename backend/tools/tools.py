@@ -16,12 +16,14 @@ def search_hcp(query: str) -> str:
     finally:
         db.close()
 
+from typing import Optional, List
+
 @tool
 def log_interaction(
-    hcp_name: str = None, interaction_type: str = None, date: str = None, time: str = None,
-    attendees: list = None, topics_discussed: list = None, materials_shared: list = None,
-    samples_distributed: str = None, sentiment: str = None, outcomes: str = None, follow_up_actions: str = None,
-    summary: str = None
+    hcp_name: Optional[str] = None, interaction_type: Optional[str] = None, date: Optional[str] = None, time: Optional[str] = None,
+    attendees: Optional[list] = None, topics_discussed: Optional[list] = None, materials_shared: Optional[list] = None,
+    samples_distributed: Optional[str] = None, sentiment: Optional[str] = None, outcomes: Optional[str] = None, follow_up_actions: Optional[str] = None,
+    summary: Optional[str] = None
 ) -> str:
     """Save interaction details into database. Pass the interaction fields as arguments."""
     db = SessionLocal()
@@ -46,10 +48,10 @@ def log_interaction(
 
 @tool
 def edit_latest_interaction(
-    hcp_name: str = None, interaction_type: str = None, date: str = None, time: str = None,
-    attendees: list = None, topics_discussed: list = None, materials_shared: list = None,
-    samples_distributed: str = None, sentiment: str = None, outcomes: str = None, follow_up_actions: str = None,
-    summary: str = None
+    hcp_name: Optional[str] = None, interaction_type: Optional[str] = None, date: Optional[str] = None, time: Optional[str] = None,
+    attendees: Optional[list] = None, topics_discussed: Optional[list] = None, materials_shared: Optional[list] = None,
+    samples_distributed: Optional[str] = None, sentiment: Optional[str] = None, outcomes: Optional[str] = None, follow_up_actions: Optional[str] = None,
+    summary: Optional[str] = None
 ) -> str:
     """Allow updating the most recently logged interaction. Pass only the fields you want to update."""
     db = SessionLocal()
