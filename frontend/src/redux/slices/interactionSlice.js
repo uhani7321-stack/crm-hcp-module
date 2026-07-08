@@ -26,16 +26,23 @@ const interactionSlice = createSlice({
     },
     populateFromAI: (state, action) => {
       const data = action.payload;
+      
+      const safeJoin = (val, separator = ', ') => {
+        if (!val) return '';
+        if (Array.isArray(val)) return val.join(separator);
+        return String(val);
+      };
+
       return {
         ...state,
         hcp_name: data.hcp_name || state.hcp_name,
         interaction_type: data.interaction_type || state.interaction_type,
         date: data.date || state.date,
         time: data.time || state.time,
-        attendees: (data.attendees || []).join(', ') || state.attendees,
-        topics_discussed: (data.topics_discussed || []).join('\n') || state.topics_discussed,
-        materials_shared: (data.materials_shared || []).join(', ') || state.materials_shared,
-        samples_distributed: data.samples_distributed || state.samples_distributed,
+        attendees: safeJoin(data.attendees, ', ') || state.attendees,
+        topics_discussed: safeJoin(data.topics_discussed, '\n') || state.topics_discussed,
+        materials_shared: safeJoin(data.materials_shared, ', ') || state.materials_shared,
+        samples_distributed: safeJoin(data.samples_distributed, ', ') || state.samples_distributed,
         sentiment: data.sentiment || state.sentiment,
         outcomes: data.outcomes || state.outcomes,
         follow_up_actions: data.follow_up_actions || state.follow_up_actions,

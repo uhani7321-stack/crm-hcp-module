@@ -52,10 +52,11 @@ const LogInteraction = () => {
         }));
       }
     } catch (error) {
+      console.error("Extraction error:", error);
       dispatch(setError(error.message));
       dispatch(addMessage({ 
         role: 'assistant', 
-        content: 'Failed to extract data. Is the backend running?' 
+        content: `Failed to extract data: ${error.message}` 
       }));
     } finally {
       dispatch(setLoading(false));
