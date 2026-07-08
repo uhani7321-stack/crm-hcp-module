@@ -43,19 +43,9 @@ const LogInteraction = () => {
         }));
       } else if (data) {
         dispatch(populateFromAI(data));
-        
-        // Format the message with tool usage indicators (without markdown since we render plain text)
-        let responseContent = data.summary || "Extracted details from your message and populated the form.";
-        if (data.tools_called && data.tools_called.length > 0) {
-          // Remove duplicates
-          const uniqueTools = [...new Set(data.tools_called)];
-          const toolsString = uniqueTools.join(', ');
-          responseContent += `\n\n🛠️ Tools executed: [ ${toolsString} ]`;
-        }
-        
         dispatch(addMessage({ 
           role: 'assistant', 
-          content: responseContent 
+          content: 'Extracted details from your message and populated the form.' 
         }));
       }
     } catch (error) {
@@ -299,7 +289,7 @@ const LogInteraction = () => {
           </div>
           <div>
             <h2 className="text-[14px] font-semibold text-gray-800">AI Assistant</h2>
-            <p className="text-[12px] text-gray-500">Log interaction via chat</p>
+            <p className="text-[12px] text-gray-500">Log interaction details here via chat</p>
           </div>
         </div>
         
@@ -307,8 +297,8 @@ const LogInteraction = () => {
         <div className="flex-1 p-4 bg-[#FAFAFA] flex flex-col overflow-y-auto">
           {/* Default Info Card */}
           {chatMessages.length === 0 && (
-            <div className="bg-white border border-gray-200 rounded-lg p-4 text-[13px] text-gray-600 shadow-sm leading-relaxed">
-              Log interaction details here (e.g., "Met Dr. Smith, discussed Product X efficacy, positive sentiment, shared brochure") or ask for help.
+            <div className="bg-[#e6f4f1] text-[#2c7a7b] rounded-lg p-4 text-[13px] shadow-sm leading-relaxed mb-4">
+              Log interaction details here (e.g., "Met Dr. Smith, discussed Prodo-X efficacy, positive sentiment, shared brochure") or ask for help.
             </div>
           )}
           
@@ -317,17 +307,26 @@ const LogInteraction = () => {
             {chatMessages.map((msg, idx) => (
               <div 
                 key={idx} 
-                className={`max-w-[85%] rounded-lg p-3 text-[13px] ${
+                className={`max-w-[90%] rounded-lg p-3 text-[13px] shadow-sm ${
                   msg.role === 'user' 
-                    ? 'bg-primary text-white self-end rounded-br-none' 
-                    : 'bg-white border border-gray-200 text-gray-700 self-start rounded-bl-none shadow-sm'
+                    ? 'bg-[#f0f0f0] border-l-[3px] border-blue-600 text-gray-800 self-start rounded-tl-none' 
+                    : 'bg-[#e8f5e9] text-[#2e7d32] border border-[#c8e6c9] self-end rounded-tr-none'
                 }`}
               >
-                {msg.content}
+                {msg.role === 'assistant' ? (
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-green-600">✅</span>
+                      <span>{msg.content}</span>
+                    </div>
+                  </div>
+                ) : (
+                  msg.content
+                )}
               </div>
             ))}
             {isLoading && (
-              <div className="bg-white border border-gray-200 text-gray-500 self-start rounded-lg rounded-bl-none shadow-sm p-3 text-[13px] flex items-center gap-2">
+              <div className="bg-white border border-gray-200 text-gray-500 self-start rounded-lg rounded-tl-none shadow-sm p-3 text-[13px] flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
                 <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
                 <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
