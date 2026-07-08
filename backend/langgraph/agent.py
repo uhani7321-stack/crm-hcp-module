@@ -41,6 +41,10 @@ When a user asks you to log an interaction or provides interaction details, you 
     "summary": "string"
 }
 
+IMPORTANT RULES:
+- DO NOT invent or hallucinate data. If the user does not specify attendees, leave it empty or null (DO NOT put "John Doe").
+- If the user says they made a mistake and want to remove something (e.g. "remove brochures"), you must actually REMOVE that item from the corresponding list (e.g. `materials_shared`) in your tool call, rather than adding "Brochure Removal" to `topics_discussed`.
+
 Help the user by utilizing your tools, then give a friendly response!
 To ensure the UI form updates, ALWAYS end your final response message with the raw JSON of the interaction state wrapped in a <json>...</json> tag block.
 """
