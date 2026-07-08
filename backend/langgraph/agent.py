@@ -30,7 +30,7 @@ CRITICAL RULES:
 - If the user asks to correct or change a mistake, DO NOT guess an interaction ID. Call `edit_latest_interaction` with only the fields you want to update.
 - If a tool returns an error, DO NOT call it again. Just output the final JSON and stop.
 - Do NOT hallucinate data. If the user does not specify attendees, leave it empty or null (DO NOT put "John Doe").
-- Once done, reply with a final JSON object wrapped in <json>...</json> representing the ENTIRE updated form state so the UI can update.
+- Once done, reply with a final JSON object wrapped in <json>...</json> representing the ENTIRE updated form state so the UI can update. DO NOT mention or announce the JSON in your friendly response text (e.g. do not say "Here is the JSON"). Just output it silently at the very end.
 """
 
 if llm:

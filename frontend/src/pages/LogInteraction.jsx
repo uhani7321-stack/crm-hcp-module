@@ -45,11 +45,6 @@ const LogInteraction = () => {
         dispatch(populateFromAI(data));
         
         let responseContent = data.summary || "Extracted details from your message and populated the form.";
-        if (data.tools_called && data.tools_called.length > 0) {
-          const uniqueTools = [...new Set(data.tools_called)];
-          const toolsString = uniqueTools.join(', ');
-          responseContent += `\n\n🛠️ Tools executed: [ ${toolsString} ]`;
-        }
         
         dispatch(addMessage({ 
           role: 'assistant', 
