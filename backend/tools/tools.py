@@ -35,8 +35,25 @@ def log_interaction(
             if hcp:
                 hcp_id = hcp.id
                 
+        # Parse date and time if provided as strings
+        parsed_date = None
+        if date:
+            try:
+                from datetime import datetime
+                parsed_date = datetime.strptime(date, "%Y-%m-%d").date()
+            except ValueError:
+                pass
+                
+        parsed_time = None
+        if time:
+            try:
+                from datetime import datetime
+                parsed_time = datetime.strptime(time, "%H:%M").time()
+            except ValueError:
+                pass
+                
         data = {
-            "hcp_id": hcp_id, "interaction_type": interaction_type, "date": date, "time": time,
+            "hcp_id": hcp_id, "interaction_type": interaction_type, "date": parsed_date, "time": parsed_time,
             "attendees": attendees, "topics_discussed": topics_discussed, "materials_shared": materials_shared,
             "samples_distributed": samples_distributed, "sentiment": sentiment, "outcomes": outcomes, "follow_up_actions": follow_up_actions,
             "summary": summary
@@ -73,8 +90,25 @@ def edit_latest_interaction(
             if hcp:
                 hcp_id = hcp.id
                 
+        # Parse date and time if provided as strings
+        parsed_date = None
+        if date:
+            try:
+                from datetime import datetime
+                parsed_date = datetime.strptime(date, "%Y-%m-%d").date()
+            except ValueError:
+                pass
+                
+        parsed_time = None
+        if time:
+            try:
+                from datetime import datetime
+                parsed_time = datetime.strptime(time, "%H:%M").time()
+            except ValueError:
+                pass
+                
         updates = {
-            "hcp_id": hcp_id, "interaction_type": interaction_type, "date": date, "time": time,
+            "hcp_id": hcp_id, "interaction_type": interaction_type, "date": parsed_date, "time": parsed_time,
             "attendees": attendees, "topics_discussed": topics_discussed, "materials_shared": materials_shared,
             "samples_distributed": samples_distributed, "sentiment": sentiment, "outcomes": outcomes, "follow_up_actions": follow_up_actions,
             "summary": summary
