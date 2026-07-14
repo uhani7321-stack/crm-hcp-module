@@ -28,8 +28,15 @@ def log_interaction(
     """Save interaction details into database. Pass the interaction fields as arguments."""
     db = SessionLocal()
     try:
+        # Find HCP by name
+        hcp_id = None
+        if hcp_name:
+            hcp = db.query(HCP).filter(HCP.name.ilike(f"%{hcp_name}%")).first()
+            if hcp:
+                hcp_id = hcp.id
+                
         data = {
-            "hcp_name": hcp_name, "interaction_type": interaction_type, "date": date, "time": time,
+            "hcp_id": hcp_id, "interaction_type": interaction_type, "date": date, "time": time,
             "attendees": attendees, "topics_discussed": topics_discussed, "materials_shared": materials_shared,
             "samples_distributed": samples_distributed, "sentiment": sentiment, "outcomes": outcomes, "follow_up_actions": follow_up_actions,
             "summary": summary
@@ -60,8 +67,14 @@ def edit_latest_interaction(
         if not interaction:
             return "Interaction not found."
         
+        hcp_id = None
+        if hcp_name:
+            hcp = db.query(HCP).filter(HCP.name.ilike(f"%{hcp_name}%")).first()
+            if hcp:
+                hcp_id = hcp.id
+                
         updates = {
-            "hcp_name": hcp_name, "interaction_type": interaction_type, "date": date, "time": time,
+            "hcp_id": hcp_id, "interaction_type": interaction_type, "date": date, "time": time,
             "attendees": attendees, "topics_discussed": topics_discussed, "materials_shared": materials_shared,
             "samples_distributed": samples_distributed, "sentiment": sentiment, "outcomes": outcomes, "follow_up_actions": follow_up_actions,
             "summary": summary

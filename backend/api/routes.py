@@ -44,26 +44,24 @@ def extract_from_chat(request: ChatRequest):
         
         # Try to find the JSON block inside <json> tags or markdown
         data = {}
+        json_str = ""
         if "<json>" in final_message and "</json>" in final_message:
             json_str = final_message.split("<json>")[1].split("</json>")[0].strip()
-            try:
-                import json
-                data = json.loads(json_str)
-            except:
-                pass
-        elif "```json" in final_message:
+        elif "```json" in final_message and "```" in final_message.split("```json")[1]:
             json_str = final_message.split("```json")[1].split("```")[0].strip()
+            
+        if json_str:
             try:
                 import json
                 data = json.loads(json_str)
             except:
                 pass
-                
+        
         # Clean the final message to remove the json blocks before sending to UI
         clean_message = final_message
         if "<json>" in clean_message:
             clean_message = clean_message.split("<json>")[0].strip()
-        if "```json" in clean_message:
+        elif "```json" in clean_message:
             clean_message = clean_message.split("```json")[0].strip()
             
         data["summary"] = clean_message
