@@ -34,7 +34,10 @@ CRITICAL RULES:
 - Once done, reply with a final JSON object wrapped in <json>...</json> representing the ENTIRE updated form state so the UI can update. DO NOT mention or announce the JSON in your friendly response text (e.g. do not say "Here is the JSON"). Just output it silently at the very end.
 """
 
+from langgraph.checkpoint.memory import MemorySaver
+
 if llm:
-    agent = create_react_agent(llm, tools=tools_list, prompt=system_prompt)
+    memory = MemorySaver()
+    agent = create_react_agent(llm, tools=tools_list, prompt=system_prompt, checkpointer=memory)
 else:
     agent = None

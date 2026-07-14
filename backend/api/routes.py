@@ -25,7 +25,10 @@ def get_interactions(skip: int = 0, limit: int = 100, db: Session = Depends(get_
 def extract_from_chat(request: ChatRequest):
     try:
         try:
-            result = agent.invoke({"messages": [HumanMessage(content=request.message)]})
+            result = agent.invoke(
+                {"messages": [HumanMessage(content=request.message)]},
+                config={"configurable": {"thread_id": "1"}}
+            )
         except Exception as e:
             import traceback
             return {"summary": f"LLM Error: {str(e)} - {traceback.format_exc()}", "tools_called": []}
